@@ -10,3 +10,4 @@ class MainConfig:
     tx_strategy: Literal['count', 'shuffle', 'random'] = 'count'
     listen_duration: float = 15
     rx_strategy: Literal['count', 'shuffle', 'random'] = 'count'
+    rx_start_channel: Literal['fixed', 'count', 'random'] = 'fixed'
