@@ -12,10 +12,10 @@ class RxNodeList:
         ]
         self.info_total_channel = 0
 
-    def process_received_channel(self, node_index, channel):
+    def process_received_channel(self, node_index: int, channel: int):
         for node in self.nodes:
             node.process_received_channel(node_index, channel)
-        
+
         self.info_total_channel += 1
 
     def _get_start_channel(self, index):
@@ -31,3 +31,6 @@ class RxNodeList:
             return random.randint(0, self.cfg.num_channels - 1)
 
         raise ValueError(f"Invalid rx start channel strategy {strategy}")
+
+    def get_rx_channel_info(self, node_index: int):
+        return self.nodes[node_index].get_rx_channel_info()

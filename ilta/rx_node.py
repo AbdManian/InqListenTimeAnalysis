@@ -21,3 +21,6 @@ class RxNode(RxChannel):
         if cur_channel == channel:
             self.info_total_matched_channel += 1
             self.info_channel[channel] += 1
+
+    def get_rx_channel_info(self):
+        return self.info_channel

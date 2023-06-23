@@ -1,36 +1,31 @@
-import ilta
+from ilta.config import MainConfig
+from ilta.rx_node_list import RxNodeList
+from ilta.tx_channel_list import TxChannelList
+import numpy as np
+
+c = MainConfig()
+
+c.num_channels = 15
+c.num_nodes = 5
+c.channel_per_ts = 3
+c.tx_strategy = "random"
+c.listen_duration = 15
+c.rx_strategy = "count"
+c.rx_start_channel = "fixed"
 
 
+tx = TxChannelList(c)
+rx = RxNodeList(c)
 
-c = ilta.MainConfig()
+test_cnt = (c.num_channels * c.num_nodes) * 10000
 
-c.num_channels = 4
-c.num_nodes = 3
-c.channel_per_ts = 4
-c.tx_strategy = 'shuffle'
-c.listen_duration = 1.3
-c.rx_strategy = 'shuffle'
-
-
-tx = ilta.TxChannelList(c)
-rx = ilta.RxNodeList(c)
-
-# rx = RxChannel(c, 49, 0)
-
-# channel_visit = [0] * c.num_channels
-
-# for i in range(10000):
-#     node, channel = rx.get_next_listen_channel()
-#     channel_visit[channel] += 1
-
-#     # print(f'{channel}  ', end='')
-#     # if i%10==9:
-#     #     print()
-
-# print(channel_visit)
-# # tx = TxChannelList(c)
+for i in range(test_cnt):
+    node, channel = tx.get_next_channel()
+    rx.process_received_channel(node, channel)
 
 
-# for i in range(100):
-#     print(tx.get_next_channel())
-
+for i in range(c.num_nodes):
+    channels = rx.get_rx_channel_info(i)
+    dev = np.std(channels)
+    total_sum = np.sum(channels)
+    print(f"[{i}]: {channels} sum={total_sum} sd={dev}")
